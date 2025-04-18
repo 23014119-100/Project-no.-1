@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MelodyHub - Playlists</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800 p-5 flex justify-between items-center">
+        <div class="text-2xl font-bold text-green-500">MelodyHub</div>
+        <nav>
+            <ul class="flex space-x-5">
+                <li><a href="index.html" class="text-white hover:text-green-500 transition">Home</a></li>
+                <li><a href="browse.html" class="text-white hover:text-green-500 transition">Browse</a></li>
+                <li><a href="playlists.html" class="text-white hover:text-green-500 transition">Playlists</a></li>
+                <li><a href="artists.html" class="text-white hover:text-green-500 transition">Artists</a></li>
+                <li><a href="about.html" class="text-white hover:text-green-500 transition">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="p-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl">Your Playlists</h1>
+            <button id="createPlaylistBtn" class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition flex items-center">
+                <i class="fas fa-plus mr-2"></i> New Playlist
+            </button>
+        </div>
+        <div id="playlistGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Playlists will be loaded by JavaScript -->
+        </div>
+    </section>
+    
+    <!-- Create Playlist Modal -->
+    <div id="playlistModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
+            <h2 class="text-2xl mb-4">Create New Playlist</h2>
+            <input type="text" id="playlistName" placeholder="Playlist name" class="w-full p-3 mb-4 bg-gray-700 rounded">
+            <div class="flex justify-end space-x-3">
+                <button id="cancelPlaylistBtn" class="px-4 py-2 rounded">Cancel</button>
+                <button id="savePlaylistBtn" class="bg-green-500 px-4 py-2 rounded hover:bg-green-600">Create</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="bg-gray-800 py-8 text-center">
+        <p>&copy; 2023 MelodyHub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Playlists data
+        let playlists = [
+            { name: "Workout Mix", songs: 50, duration: "3h 45m", cover: "/a1/diljit.jpg" },
+            { name: "Chill Vibes", songs: 35, duration: "2h 30m", cover: "/a1/cheema.jpeg" },
+            { name: "Road Trip", songs: 75, duration: "5h 15m", cover: "/a1/a.jpg" }
+        ];
+
+        // DOM elements
+        const playlistGrid = document.getElementById('playlistGrid');
+        const playlistModal = document.getElementById('playlistModal');
+        const createPlaylistBtn = document.getElementById('createPlaylistBtn');
+        const cancelPlaylistBtn = document.getElementById('cancelPlaylistBtn');
+        const savePlaylistBtn = document.getElementById('savePlaylistBtn');
+        const playlistNameInput = document.getElementById('playlistName');
+
+        // Load playlists
+        function loadPlaylists() {
+            playlistGrid.innerHTML = '';
+            
+            playlists.forEach(playlist => {
+                const playlistElement = document.createElement('div');
+                playlistElement.className = 'bg-gray-700 rounded-lg overflow-hidden hover:scale-103 transition cursor-pointer';
+                playlistElement.innerHTML = `
+                    <img src="${playlist.cover}" alt="${playlist.name}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">${playlist.name}</h3>
+                        <p class="text-gray-400 text-sm">${playlist.songs} songs • ${playlist.duration}</p>
+                    </div>
+                `;
+                playlistElement.addEventListener('click', () => {
+                    alert(`Playing playlist: ${playlist.name}`);
+                });
+                playlistGrid.appendChild(playlistElement);
+            });
+
+            // Add "Create New" card
+            const newPlaylistElement = document.createElement('div');
+            newPlaylistElement.className = 'bg-gray-600 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-gray-500 transition h-full min-h-[300px]';
+            newPlaylistElement.innerHTML = `
+                <i class="fas fa-plus text-5xl mb-4"></i>
+                <h3 class="font-semibold">Create New Playlist</h3>
+            `;
+            newPlaylistElement.addEventListener('click', () => {
+                playlistModal.classList.remove('hidden');
+            });
+            playlistGrid.appendChild(newPlaylistElement);
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', loadPlaylists);
+
+        createPlaylistBtn.addEventListener('click', () => {
+            playlistModal.classList.remove('hidden');
+        });
+
+        cancelPlaylistBtn.addEventListener('click', () => {
+            playlistModal.classList.add('hidden');
+            playlistNameInput.value = '';
+        });
+
+        savePlaylistBtn.addEventListener('click', () => {
+            const name = playlistNameInput.value.trim();
+            if (name) {
+                const newPlaylist = {
+                    name: name,
+                    songs: 0,
+                    duration: "0h 0m",
+                    cover: `https://via.placeholder.com/250x200?text=${encodeURIComponent(name)}`
+                };
+                playlists.unshift(newPlaylist);
+                loadPlaylists();
+                playlistModal.classList.add('hidden');
+                playlistNameInput.value = '';
+                alert(`Playlist "${name}" created successfully!`);
+            }
+        });
+    </script>
+</body>
+</html>

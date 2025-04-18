@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MelodyHub - Artists</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800 p-5 flex justify-between items-center">
+        <div class="text-2xl font-bold text-green-500">MelodyHub</div>
+        <nav>
+            <ul class="flex space-x-5">
+                <li><a href="./index.html" class="text-white hover:text-green-500 transition">Home</a></li>
+                <li><a href="./browse.html" class="text-white hover:text-green-500 transition">Browse</a></li>
+                <li><a href="./playlists.html" class="text-white hover:text-green-500 transition">Playlists</a></li>
+                <li><a href="./artists.html" class="text-white hover:text-green-500 transition">Artists</a></li>
+                <li><a href="./about.html" class="text-white hover:text-green-500 transition">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="p-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl">Popular Artists</h1>
+            <div class="relative">
+                <input type="text" id="artistSearch" placeholder="Search artists..." 
+                       class="bg-gray-700 px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+        </div>
+        <div id="artistGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+            <!-- Artists will be loaded by JavaScript -->
+        </div>
+    </section>
+    
+    <footer class="bg-gray-800 py-8 text-center">
+        <p>&copy; 2023 MelodyHub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Artists data
+        const artists = [
+            { name: "Diljit", listeners: "85.2M", image: "/a1/diljit.jpg" },
+            { name: "Cheema", listeners: "78.9M", image: "/a1/cheema.jpeg" },
+            { name: "Talha", listeners: "72.4M", image: "/a1/talha.jpeg" },
+            { name: "Karan aujla", listeners: "68.7M", image: "/a1/a.jpg" },
+            { name: "Sidhu", listeners: "65.3M", image: "/a1/sidhu.jpg" },
+            { name: "Honey Singh", listeners: "63.1M", image: "/a1/yoyo.jpg" },
+            { name: "Parmish verma", listeners: "59.8M", image: "/a1/parmish-verma.jpg" },
+            { name: "Arjit", listeners: "56.5M", image: "/a1/arjit.jpg" }
+        ];
+
+        // Load artists
+        function loadArtists(filter = '') {
+            const artistGrid = document.getElementById('artistGrid');
+            artistGrid.innerHTML = '';
+            
+            const filteredArtists = artists.filter(artist => 
+                artist.name.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            filteredArtists.forEach(artist => {
+                const artistElement = document.createElement('div');
+                artistElement.className = 'text-center transform hover:scale-105 transition cursor-pointer';
+                artistElement.innerHTML = `
+                    <img src="${artist.image}" alt="${artist.name}" class="w-40 h-40 rounded-full object-cover mx-auto mb-4">
+                    <h3 class="font-semibold">${artist.name}</h3>
+                    <p class="text-gray-400 text-sm">${artist.listeners} monthly listeners</p>
+                `;
+                artistElement.addEventListener('click', () => {
+                    alert(`Viewing ${artist.name}'s profile`);
+                });
+                artistGrid.appendChild(artistElement);
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            loadArtists();
+            
+            const artistSearch = document.getElementById('artistSearch');
+            artistSearch.addEventListener('input', (e) => {
+                loadArtists(e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>

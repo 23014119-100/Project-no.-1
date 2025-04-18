@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MelodyHub - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800 p-5 flex justify-between items-center">
+        <div class="text-2xl font-bold text-green-500">MelodyHub</div>
+        <nav>
+            <ul class="flex space-x-5">
+                <li><a href="./index.html" class="text-white hover:text-green-500 transition">Home</a></li>
+                <li><a href="./browse.html" class="text-white hover:text-green-500 transition">Browse</a></li>
+                <li><a href="./playlists.html" class="text-white hover:text-green-500 transition">Playlists</a></li>
+                <li><a href="./artists.html" class="text-white hover:text-green-500 transition">Artists</a></li>
+                <li><a href="./about.html" class="text-white hover:text-green-500 transition">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="h-[500px] bg-[linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7))] bg-[url('https://via.placeholder.com/1920x1080')] bg-cover flex flex-col justify-center items-center text-center p-5">
+        <h1 class="text-5xl mb-5">Discover Your Next Favorite Song</h1>
+        <p class="text-xl mb-8 max-w-2xl">Stream millions of songs, create playlists, and connect with artists worldwide.</p>
+        <button id="ctaButton" class="bg-green-500 text-white px-8 py-3 rounded-full hover:bg-green-600 transition transform hover:scale-105">Start Listening Now</button>
+    </section>
+    
+    <section class="py-12 px-5 text-center">
+        <h2 class="text-3xl mb-10">Featured Albums</h2>
+        <div id="featuredAlbums" class="flex justify-center flex-wrap gap-8">
+            <!-- Albums will be loaded by JavaScript -->
+        </div>
+    </section>
+    
+    <footer class="bg-gray-800 py-8 text-center">
+        <p>&copy; 2023 MelodyHub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Featured albums data
+        const albums = [
+            { title: "Midnight Dreams", artist: "The Night Owls", cover: "/a1/diljit.jpg" },
+            { title: "Summer Vibes", artist: "Beach Collective", cover: "/a1/sidhu.jpg" },
+            { title: "Urban Echo", artist: "City Lights", cover: "/a1/yoyo.jpg" },
+            { title: "Acoustic Sessions", artist: "Emma Stone", cover: "/a1/a.jpg" }
+        ];
+
+        // Load featured albums
+        document.addEventListener('DOMContentLoaded', () => {
+            const featuredAlbumsContainer = document.getElementById('featuredAlbums');
+            
+            albums.forEach(album => {
+                const albumElement = document.createElement('div');
+                albumElement.className = 'w-48 transform hover:scale-105 transition';
+                albumElement.innerHTML = `
+                    <img src="${album.cover}" alt="${album.title}" class="w-full rounded-lg mb-2">
+                    <h3 class="font-semibold">${album.title}</h3>
+                    <p class="text-gray-400">${album.artist}</p>
+                `;
+                albumElement.addEventListener('click', () => {
+                    alert(`Now playing: ${album.title} by ${album.artist}`);
+                });
+                featuredAlbumsContainer.appendChild(albumElement);
+            });
+
+            // CTA button animation
+            const ctaButton = document.getElementById('ctaButton');
+            ctaButton.addEventListener('mouseenter', () => {
+                ctaButton.classList.add('animate-pulse');
+            });
+            ctaButton.addEventListener('mouseleave', () => {
+                ctaButton.classList.remove('animate-pulse');
+            });
+            ctaButton.addEventListener('click', () => {
+                window.location.href = 'browse.html';
+            });
+        });
+    </script>
+</body>
+</html>
